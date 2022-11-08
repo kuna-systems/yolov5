@@ -9,11 +9,13 @@ import io
 import torch
 from flask import Flask, request
 from PIL import Image
+import time
 
 app = Flask(__name__)
 
 DETECTION_URL = "/v1/object-detection/yolov5s"
 
+model = torch.hub.load("ultralytics/yolov5", "yolov5s", force_reload=True)
 
 @app.route(DETECTION_URL, methods=["POST"])
 def predict():
@@ -29,7 +31,7 @@ def predict():
         im_file = request.files["image"]
         im_bytes = im_file.read()
         im = Image.open(io.BytesIO(im_bytes))
-
+        time.sleep(0.1)
         results = model(im, size=640)  # reduce size=320 for faster inference
         return results.pandas().xyxy[0].to_json(orient="records")
 
@@ -43,4 +45,5 @@ if __name__ == "__main__":
     torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
 
     model = torch.hub.load("ultralytics/yolov5", "yolov5s", force_reload=True)  # force_reload to recache
+    
     app.run(host="0.0.0.0", port=opt.port)  # debug=True causes Restarting with stat
