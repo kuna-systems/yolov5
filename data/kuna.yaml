@@ -8,9 +8,9 @@
 
 
 # Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
-train: /home/mykola/kuna-ml/kuna-dataset3/train_yolo_dataset.txt  # train images (relative to 'path') 128 images
-val: /home/mykola/kuna-ml/kuna-dataset3/val_yolo_dataset.txt # val images (relative to 'path') 128 images
-test: /home/mykola/kuna-ml/kuna-dataset3/test_yolo_dataset.txt
+train: /home/mykola/kuna-ml/kuna-dataset/yolo_format/train_yolo_dataset.txt  # train images (relative to 'path') 128 images
+val: /home/mykola/kuna-ml/kuna-dataset/yolo_format/val_yolo_dataset.txt # val images (relative to 'path') 128 images
+test: /home/mykola/kuna-ml/kuna-dataset/yolo_format/test_yolo_dataset.txt
 
 # Classes
 nc: 4 # number of classes
