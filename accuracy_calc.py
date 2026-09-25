@@ -70,6 +70,8 @@ def run(
         if '.txt' not in i:
             continue
         targets = []
+        if not os.path.exists(os.path.join(path_test, i)):
+            continue
         with open(os.path.join(path_test, i)) as f:
             lines = f.readlines()
             for line in lines:
@@ -82,7 +84,8 @@ def run(
             lines = f.readlines()
             for line in lines:
                 tmp = line.strip().split()
-                xywh = [float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5]), float(tmp[1]),int(tmp[0])]
+                xywh = [float(tmp[1]), float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5]),int(tmp[0])]
+                #xywh = [float(tmp[2]), float(tmp[3]), float(tmp[4]), float(tmp[5]), float(tmp[1]),int(tmp[0])]
                 xyxy = [xywh[0]-xywh[2]/2, xywh[1]-xywh[3]/2, xywh[0]+xywh[2]/2, xywh[1]+xywh[3]/2]
                 labels.append([xyxy[0]*shapes[0], xyxy[1]*shapes[0], xyxy[2]*shapes[1], xyxy[3]*shapes[1], xywh[-2], xywh[-1]])
 
@@ -135,6 +138,17 @@ def run(
     if (nc < 50) and nc > 1 and len(stats):
         for i, c in enumerate(ap_class):
             LOGGER.info(pf % (names[c], seen, nt[c], p[i], r[i], ap50[i], ap[i]))
+
+    # Excel-friendly tab-separated summary (copy-paste straight into a spreadsheet)
+    print()
+    print(f"R\t\t{mr:.3f}")
+    print(f"mAP@.5\t\t{map50:.3f}")
+    print(f"mAP@.5:.95\t\t{map:.3f}")
+    print()
+    print("\tR\tmAP@.5")
+    if (nc < 50) and nc > 1 and len(stats):
+        for i, c in enumerate(ap_class):
+            print(f"{names[c]}\t{r[i]:.3f}\t{ap50[i]:.3f}")
 
     # Plots
     if plots:
